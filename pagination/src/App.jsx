@@ -4,7 +4,7 @@ import './App.css'
 function App() {
 
   const [products, setProduct] = useState([]);
-  const [ page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
 
   const fetchProduct = async () => {
     const res = await fetch("https://dummyjson.com/products?limit=100");
@@ -20,12 +20,16 @@ function App() {
     fetchProduct()
   }, [])
 
+  const SelectHandler = () =>{
+    setPage()
+  }
+
   return (<div>
     {
       products.length > 0 && (
         <div className='products'>
           {
-            products.slice(page * 9- 9, page * 9).map((prod) => {
+            products.slice(page * 9 - 9, page * 9).map((prod) => {
               return (
                 <span className='products--single'>
                   <img src={prod.thumbnail} alt={prod.title} />
@@ -34,17 +38,19 @@ function App() {
               )
             })
           }
-        </div> 
+        </div>
       )
     }
     {
-      products.length>0 && <div className='pagination'>
-           <span> 👈 </span>
-           {
-
-           }
-            <span>1</span>
-           <span>⏩ </span>
+      products.length > 0 && <div className='pagination'>
+        <span> 👈 </span>
+        {
+          [...Array(products.length / 10)].map((_, i) => {
+            return <span onClick={() => SelectHandler(i + 1)} key={i}>{i + 1}</span>
+          })
+        }
+        <span>1</span>
+        <span>⏩ </span>
       </div>
     }
   </div>
